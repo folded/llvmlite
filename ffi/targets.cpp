@@ -3,6 +3,7 @@
 #include "llvm/Support/Host.h"
 #include "llvm-c/TargetMachine.h"
 #include "llvm/Target/TargetMachine.h"
+#include "llvm/Target/TargetOptions.h"
 #include "llvm/IR/LegacyPassManager.h"
 #include "llvm/Analysis/TargetLibraryInfo.h"
 #include "llvm/ADT/Triple.h"
@@ -237,7 +238,9 @@ LLVMPY_CreateTargetMachine(LLVMTargetRef T,
         rm = Reloc::DynamicNoPIC;
 
     TargetOptions opt;
+#if LLVM_VERSION_MAJOR < 12
     opt.PrintMachineCode = PrintMC;
+#endif
     opt.MCOptions.ABIName = ABIName;
 
     bool jit = JIT;
