@@ -191,7 +191,7 @@ struct RefPrunePass : public FunctionPass {
 
     RefPrunePass(Subpasses flags=Subpasses::All,
                  size_t subgraph_limit=-1)
-            : FunctionPass(ID), flags(flags), subgraph_limit(subgraph_limit) {
+            : FunctionPass(ID), subgraph_limit(subgraph_limit), flags(flags) {
         initializeRefPrunePassPass(*PassRegistry::getPassRegistry());
     }
 
