@@ -61,10 +61,17 @@ class TypeRef(ffi.ObjectRef):
         return ffi.lib.LLVMPY_TypeIsPointer(self)
 
     @property
+    def is_opaque_pointer(self):
+        """
+        Returns true is the type is an opaque pointer type.
+        """
+        return ffi.lib.LLVMPY_TypeIsOpaquePointer(self)
+
+    @property
     def element_type(self):
         """
         Returns the pointed-to type. When the type is not a pointer,
-        raises exception.
+        or is an opaque pointer, raises exception.
         """
         if not self.is_pointer:
             raise ValueError("Type {} is not a pointer".format(self))

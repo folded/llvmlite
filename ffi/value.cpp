@@ -419,13 +419,29 @@ LLVMPY_TypeIsPointer(LLVMTypeRef type)
     return llvm::unwrap(type)->isPointerTy();
 }
 
+API_EXPORT(bool)
+LLVMPY_TypeIsOpaquePointer(LLVMTypeRef type)
+{
+#if LLVM_VERSION_MAJOR < 15
+    return false;
+#else
+    return llvm::unwrap(type)->isOpaquePointerTy();
+#endif
+}
+
 API_EXPORT(LLVMTypeRef)
 LLVMPY_GetElementType(LLVMTypeRef type)
 {
     llvm::Type* unwrapped = llvm::unwrap(type);
     llvm::PointerType* ty = llvm::dyn_cast<llvm::PointerType>(unwrapped);
     if (ty != nullptr) {
+#if LLVM_VERSION_MAJOR < 15
         return llvm::wrap(ty->getElementType());
+#else
+        // getElementPointerType is deprecated
+        if (!ty->isOpaque())
+            return llvm::wrap(ty->getPointerElementType());
+#endif
     }
     return nullptr;
 }
