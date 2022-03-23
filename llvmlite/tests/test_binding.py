@@ -384,7 +384,7 @@ class TestRISCVABI(BaseTest):
     def test_rv32d_ilp32(self):
         self.check_riscv_target()
         llmod = self.fpadd_ll_module()
-        target = self.riscv_target_machine(features="+f,+d")
+        target = self.riscv_target_machine(features="+f,+d", abiname="ilp32")
         self.assertEqual(self.break_up_asm(target.emit_assembly(llmod)),
                          riscv_asm_ilp32)
 
